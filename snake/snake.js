@@ -8,7 +8,7 @@
 		// initiate entities
 		var snake = new Snake();
 		var food = new Food();
-		food.placeRandom(screen);
+		food.placeRandom(screen, snake);
 
 		var animate = function(){
 			snake.move(screen, snake, food); // Snake module handles snake motion
@@ -108,8 +108,11 @@
 				this.eat();
 				food.reset(screen);
 			}
-			// detect collision with self ... I wonder if this can be optimized.
+			// detect if body is colliding with self, or the rare instance that food appears in an area taken up by the body
+			var self = this;
 			this.segments.forEach(function(segment){
+				if (segment.x == food.center.x && segment.y == food.center.y)
+					food.placeRandom(screen, self);
 				if (this.head.x == segment.x && this.head.y == segment.y)
 					this.reset(screen);
 			}, this);
@@ -123,7 +126,7 @@
 
 	Food.prototype = {
 		// randomly places itself somewhere
-		placeRandom: function(screen){
+		placeRandom: function(screen, snake){
 			this.center.x = Math.floor(Math.random() * 60) * 10;
 			this.center.y = Math.floor(Math.random() * 40) * 10;
 			screen.fillStyle = 'OliveDrab';

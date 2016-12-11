@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head><meta charset="UTF-8"><title>Space Invaders</title>   
+     <style>
+		  body {
+			background-color: AliceBlue;
+			font-family: sans-serif;
+		  	padding: 100px;
+		  }
+		  #screen {
+		  	border: 1px solid black;
+		  }
+		  .header{
+		    width: 580px;
+		    text-align: center;
+		    font-family: Courier, "Courier New", monospace;
+		    font-weight: bold;
+		    font-size: 18pt;
+		    padding: 20px;
+		  }
+		  .footer{
+			position: fixed;
+			bottom: 50px;
+			right: 50px;
+		  }
+		  .footer a {
+			  font-family: sans-serif;
+			  text-decoration: none;
+			  color: white;
+			  background-color: black;
+			  padding: 10px;
+		  }
+	 </style> 
+	 
+    <script src="spaceinvaders.js"></script>
+
+  </head>
+  <div class="header">Space Invaders</div>
+  <body>
+	<canvas id="screen" width="600" height="400"></canvas>
+	<p>Arrow keys to move, spacebar to shoot. Supported in Firefox & Chrome but not IE.</p><div class="footer">
+	<a href="/">back to main</a></div>
+  </body>
+</html>

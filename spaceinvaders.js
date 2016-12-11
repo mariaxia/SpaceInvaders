@@ -18,7 +18,7 @@
 			this.invaders[i] = new Invader(self, i);
 		};
 
-		// TODO: detect collision
+		// update entities
 		var animate = function(){
 			canvas.clearRect(0,0,600,400);
 			// update entities
@@ -48,7 +48,7 @@
 				self.hero.shoot(self);
 		}
 		
-		// TODO Fix: transition between right and left not seamless
+		// TODO Make transition between right and left seamless
 		function keyupHandler(ev){
 			var key = ev.code;
 			if (key != 'Space')
@@ -58,8 +58,14 @@
 	};
 	
 	Game.prototype = {
+		// cycles through colors for the hero
 		randomColor: function(color){
-			var colors = ["CadetBlue", "DarkSalmon", "White", "SeaGreen", "DarkSlateGrey", "GoldenRod"];
+			var colors = ["CadetBlue", 
+							"DarkSalmon", 
+							"White", 
+							"SeaGreen", 
+							"DarkSlateGrey", 
+							"GoldenRod"];
 			var num = colors.indexOf(color);
 			return colors[num + 1 % colors.length];
 		}
@@ -86,7 +92,7 @@
 			game.canvas.fillRect(this.center.x - 15, this.center.y, this.width, this.height - 5);
 		},
 		
-		// TODO - Fix: by making missile a game property, only one missile can be on the screen at a time. 
+		// pushes a missile into a "missile" array bound to the game
 		shoot: function(game){
 			game.missiles.push(new Missile({x: this.center.x, y: this.center.y - this.height/2}, 9));
 			game.audio.play();
@@ -106,6 +112,7 @@
 	};
 
 	Invader.prototype = {
+		// invaders move back and forth and shoot at random
 		update: function(game){
 			if (this.relative >= 260 || this.relative <= 0)
 				this.velocity = -this.velocity;
@@ -116,12 +123,12 @@
 			game.canvas.fillStyle = "IndianRed";
 			game.canvas.fillRect(this.center.x, this.center.y, 20, 20);
 			
-			var shoot = Math.random();
-			if (shoot < 0.001)
-				this.shoot(game);
+			this.shoot(game);
 		},
 		shoot: function(game){
-			game.missiles.push(new Missile(this.center, -2));
+			var shoot = Math.random();
+			if (shoot < 0.001)
+				game.missiles.push(new Missile(this.center, -2));
 		}
 	};
 
@@ -132,6 +139,7 @@
 	}
 	
 	Missile.prototype = {
+		// paints the missile as it travels, and detects for collision
 		update: function(game){
 			this.center.y -= this.velocity;
 			game.canvas.fillStyle = "Black";
@@ -140,11 +148,11 @@
 		},
 		detectCollision: function(game){
 			game.missiles = game.missiles.filter(function(missile){
-				// check if missiles are within screen boundaries
+				// check if missiles are still on the screen
 				if (missile.center.y < 20 || missile.center.y >= 400)
 					return false;
 					
-				// detect hero collision
+				// detect collision with hero
 				if (missile.center.y > game.height - 25
 					&& missile.center.x > game.hero.center.x - game.hero.width/2
 					&& missile.center.x < game.hero.center.x + game.hero.width/2){
@@ -152,7 +160,7 @@
 					return false;
 				}
 					
-				// detect invader collision
+				// detect collision with invaders
 				let hit = false;
 				game.invaders = game.invaders.filter(function(invader){
 					if (missile.center.x >= invader.center.x - invader.size/2 

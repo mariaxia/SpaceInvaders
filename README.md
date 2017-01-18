@@ -1,5 +1,5 @@
 #Space Invaders
 
-A game of space invaders where you never die, just change colors.
+A game of space invaders. "Death" is a flexible concept.
 
 Play it [here](https://mariaxia.tumblr.com/invaders).
